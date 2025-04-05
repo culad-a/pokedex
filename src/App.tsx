@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import IndividualPokemon from './composants/individualPokemon'
 
 interface Pokemon {
   id: number
@@ -32,6 +33,7 @@ function App() {
 
   const [lang, setLang] = useState<'fr' | 'en'>('fr')
   const [search, setSearch] = useState<string>('')
+  const [isVisible, setIsVisible] = useState<Pokemon | null>(null)
 
   const [filterType, setFilterType] = useState<string | null>(null)
   const [filterGeneration, setFilterGeneration] = useState<string | null>(null)
@@ -176,11 +178,24 @@ function App() {
           </div>
         </div>
       </header>
+      {isVisible && (
+      <IndividualPokemon 
+        pokemon={isVisible}
+        types={listType}
+        lang={lang}
+        onClose={() => setIsVisible(null)}
+      />
+    )}
+
 
       <div className='flex gap-3 w-full flex-wrap px-15 justify-center'>
         {sortedPokemon.length > 0 ? 
           sortedPokemon.map((pokemon, index) => (
-            <div key={index} className='rounded-md shadow-md bg-red-50 p-3 w-56'>
+            <div 
+              key={index} 
+              className='rounded-md shadow-md bg-red-50 p-3 w-56'
+              onClick={() => setIsVisible(pokemon)}
+            >
               <div className='flex justify-between w-full'>
                 <div>#{pokemon.id}</div>
                 <div className='flex justify-center align-center rounded-full bg-red-950 text-white w-6 h-6'>{pokemon.generation}</div>
@@ -203,6 +218,7 @@ function App() {
           <div>Aucun résultat</div>
         )}
       </div>
+
     </div>
   )
 }
