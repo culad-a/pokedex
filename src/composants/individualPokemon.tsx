@@ -33,36 +33,44 @@ interface Props {
   lang: 'fr' | 'en'
 }
 
+// … tout le début reste inchangé …
 
 const IndividualPokemon: React.FC<Props> = ({ pokemon, pokemons, onClose, types, lang }) => {
   const [isShiny, setIsShiny] = React.useState(false)
 
   return (
-    <div className='fixed top-0 left-0 w-full h-full bg-black/75 flex flex-col items-center justify-center z-50'>
-      <div className='bg-gray-100 rounded-lg shadow-lg p-6'>
+    <div className='fixed top-0 left-0 w-full h-full bg-black/75 flex items-center justify-center z-50'>
+      <div className='bg-gray-100 rounded-lg shadow-lg p-4 w-full max-w-4xl max-h-full overflow-y-auto'>
         <div className='flex justify-between items-center mb-4'>
-          <h2 className='text-2xl font-bold'>#{pokemon.id} - {pokemon.name[lang]}</h2>
+          <h2 className='text-xl sm:text-2xl font-bold'>
+            #{pokemon.id} - {pokemon.name[lang]}
+          </h2>
           <button className='text-red-600 font-bold text-lg' onClick={onClose}>X</button>
         </div>
-        <div className='flex flex-col md:flex-row items-center justify-around'>
-          <div>
-            <img src={isShiny ? pokemon.image_shiny : pokemon.image} alt={pokemon.name[lang]} className='w-40 h-40' />
-            <div className='flex items-center' onClick={() => setIsShiny(!isShiny)}>
-              Shiny
+
+        <div className='flex flex-col md:flex-row items-center justify-around gap-4'>
+          <div className='flex flex-col items-center'>
+            <img
+              src={isShiny ? pokemon.image_shiny : pokemon.image}
+              alt={pokemon.name[lang]}
+              className='w-32 h-32 sm:w-40 sm:h-40 object-contain'
+            />
+            <div className='flex items-center mt-2 cursor-pointer' onClick={() => setIsShiny(!isShiny)}>
+              <span className='mr-1'>Shiny</span>
               <div
-                className={`w-4 h-4 ml-1 rounded-full ${isShiny ? "bg-green-500" : "bg-red-500"}`}
+                className={`w-4 h-4 rounded-full ${isShiny ? "bg-green-500" : "bg-red-500"}`}
               ></div>
             </div>
           </div>
+
           <div className='text-left mt-4 md:mt-0'>
             <p><strong>{langResources[lang].generation}</strong> {pokemon.generation}</p>
             <p><strong>{langResources[lang].poids}</strong> {pokemon.weight}</p>
             <p><strong>{langResources[lang].taille}</strong> {pokemon.height}</p>
-
           </div>
         </div>
 
-        <div className='flex gap-2 m-2 justify-center'>
+        <div className='flex flex-wrap gap-2 m-4 justify-center'>
           {pokemon.types.map(id => {
             const type = types.find(t => t.id === id)
             return type ? (
@@ -74,7 +82,7 @@ const IndividualPokemon: React.FC<Props> = ({ pokemon, pokemons, onClose, types,
           })}
         </div>
 
-        <div className='flex gap-4'>
+        <div className='flex flex-wrap justify-center gap-4'>
           <StatCase title='PV' value={pokemon.stats.hp}/>
           <StatCase title={langResources[lang].attaque} value={pokemon.stats.atk}/>
           <StatCase title={langResources[lang].defense} value={pokemon.stats.def}/>
@@ -84,10 +92,10 @@ const IndividualPokemon: React.FC<Props> = ({ pokemon, pokemons, onClose, types,
         </div>
 
         <Evolution pokemon={pokemon} pokemons={pokemons} lang={lang}/>
-
       </div>
     </div>
   )
 }
+
 
 export default IndividualPokemon

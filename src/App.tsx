@@ -130,22 +130,46 @@ function App() {
     <div>
       {loading && <p>Chargement en cours...</p>}
       {error && <p>Erreur : {error}</p>}
-      <header className="flex flex-col justify-center items-center w-full p-4">
-        <img src="https://pokedex.3rgo.tech/static/media/logo.8d5a42efb18b7834c118.png" alt="logo" className="w-50" />
+      <header className="flex flex-col items-center w-full p-4 relative">
+        <img 
+          src="https://pokedex.3rgo.tech/static/media/logo.8d5a42efb18b7834c118.png" 
+          alt="logo" 
+          className="w-40 md:w-52 mb-4" 
+        />
+
+        {/* Langue Switcher */}
         <button 
           onClick={toggleLang}
-          className={lang === 'fr' ?
-            'bg-[url("https://pokedex.3rgo.tech/static/media/fr.0313c7eacb9633130ffb.svg")] w-9 h-7 absolute top-3 right-3 border border-2 border-white' : 
-            'bg-[url("https://pokedex.3rgo.tech/static/media/us.bbbd9f5266841b5c49cc.svg")] w-9 h-7 absolute top-3 right-3 border border-2 border-white'
-          }
-        ></button>
-        <div className="flex justify-center bg-red-400 w-full m-2 p-2 rounded-lg">
-          <div>
-          {langResources[lang].tri}
+          className={`absolute top-4 right-4 w-9 h-7 border-2 border-white rounded bg-no-repeat bg-center bg-cover ${
+            lang === 'fr' 
+              ? 'bg-[url("https://pokedex.3rgo.tech/static/media/fr.0313c7eacb9633130ffb.svg")]' 
+              : 'bg-[url("https://pokedex.3rgo.tech/static/media/us.bbbd9f5266841b5c49cc.svg")]'
+          }`}
+          aria-label="Switch Language"
+        />
+
+        <div className="w-full bg-red-400 rounded-xl p-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-center">
+          
+          <div className="flex flex-col text-white text-sm font-medium">
+            <label htmlFor="search" className="mb-1">{langResources[lang].rechercher}</label>
+            <input 
+              id="search"
+              type="text"
+              placeholder={langResources[lang].rechercher}
+              className="p-2 rounded border border-white text-black"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <div className="flex flex-col text-white text-sm font-medium">
+            <label htmlFor="sort" className="mb-1">{langResources[lang].tri}</label>
             <select 
+              id="sort"
               name="Sort"
               value={sortSelection || ""}
               onChange={(e) => setSortSelection(e.target.value || null)}
+              className="p-2 rounded border border-white text-black"
             >
               <option value="">{langResources[lang].tous}</option>
               {listSort.map((sort, index) => (
@@ -153,19 +177,15 @@ function App() {
               ))}
             </select>
           </div>
-          <input 
-            type="text"
-            placeholder={langResources[lang].rechercher}
-            className="border border-2 border-white rounded-sm p-1" 
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <div>
-          {langResources[lang].types}
+
+          <div className="flex flex-col text-white text-sm font-medium">
+            <label htmlFor="type" className="mb-1">{langResources[lang].types}</label>
             <select 
+              id="type"
               name="Tous"
               value={filterType || ""}
               onChange={(e) => setFilterType(e.target.value || null)}
+              className="p-2 rounded border border-white text-black"
             >
               <option value="">{langResources[lang].tous}</option>
               {listType.map((type) => (
@@ -173,12 +193,15 @@ function App() {
               ))}
             </select>
           </div>
-          <div>
-            {langResources[lang].generation} 
+
+          <div className="flex flex-col text-white text-sm font-medium">
+            <label htmlFor="generation" className="mb-1">{langResources[lang].generation}</label>
             <select 
+              id="generation"
               name="Generation"
               value={filterGeneration || ""}
               onChange={(e) => setFilterGeneration(e.target.value || null)}
+              className="p-2 rounded border border-white text-black"
             >
               <option value="">{langResources[lang].tous}</option>
               {listGeneration.map((generation, index) => (
@@ -186,6 +209,7 @@ function App() {
               ))}
             </select>
           </div>
+
         </div>
       </header>
 

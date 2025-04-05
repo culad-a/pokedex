@@ -43,9 +43,9 @@ const Evolution: React.FC<Props> = ({ pokemon, pokemons, lang }) => {
 
 
   return (
-    <div className='flex items-center justify-center'>
+    <div className='flex items-center justify-center flex-wrap'>
         {evolvedFrom && evolvedFrom.length > 0 && (
-            <div className='flex'>
+            <div className='flex flex-wrap items-center justify-center '>
                 {evolvedFrom.map(([key, value], index) => {
                     const evolvedFromPokemon = pokemons.find(
                         (pokemonFrom) => pokemonFrom.id === Number(key)
@@ -54,7 +54,7 @@ const Evolution: React.FC<Props> = ({ pokemon, pokemons, lang }) => {
                     return evolvedFromPokemon ? (
                         <div>
                             <img key={index} src={evolvedFromPokemon.image} alt={evolvedFromPokemon.name[lang]} className='w-40 h-40' />
-                            {value}
+                            <div className='text-center'>{value}</div>
                         </div>
                     ) : null
                 })}
@@ -62,7 +62,7 @@ const Evolution: React.FC<Props> = ({ pokemon, pokemons, lang }) => {
         )}
         <img src={pokemon.image} alt={pokemon.name[lang]} className='w-40 h-40' />
         {evolvesTo && evolvesTo.length > 0 && (
-            <div className='flex'>
+            <div className='flex flex-wrap items-center justify-center'>
                 {evolvesTo.map(([key, value], index) => {
                     const evolvedFromPokemon = pokemons.find(
                         (pokemonFrom) => pokemonFrom.id === Number(key)
@@ -71,7 +71,7 @@ const Evolution: React.FC<Props> = ({ pokemon, pokemons, lang }) => {
                     return evolvedFromPokemon ? (
                         <div>
                             <img key={index} src={evolvedFromPokemon.image} alt={evolvedFromPokemon.name[lang]} className='w-40 h-40' />
-                            {value}
+                            <div className='text-center'>{value}</div>
                         </div>
                     ) : null
                 })}

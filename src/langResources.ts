@@ -27,6 +27,7 @@ export const langResources = {
       vitesse: "Vitesse",
       spe_atk: "Attaque spé.",
       spe_def: "Défense spé.",
+      niveau: "Niveau",
     },
     en: {
       tri: "Sort :",
@@ -55,6 +56,7 @@ export const langResources = {
       vitesse: "Speed",
       spe_atk: "Sp. Atk",
       spe_def: "Sp. Def",
+      niveau: "Level",
     }
   }
   
