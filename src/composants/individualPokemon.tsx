@@ -1,6 +1,6 @@
 import React from 'react'
-import { useState } from 'react'
 import StatCase from './statCase'
+import Evolution from './evolution'
 
 interface Pokemon {
   id: number
@@ -19,22 +19,26 @@ interface Pokemon {
     spe_def: number
     vit: number
   }
+  evolvedFrom: { [key: string]: string }
+  evolvesTo: { [key: string]: string }
 }
 
 interface Props {
   pokemon: Pokemon
+  pokemons: Pokemon[]
   onClose: () => void
   types: { id: number; name: { [key: string]: string }; image: string }[]
   lang: 'fr' | 'en'
 }
 
 
-const IndividualPokemon: React.FC<Props> = ({ pokemon, onClose, types, lang }) => {
+const IndividualPokemon: React.FC<Props> = ({ pokemon, pokemons, onClose, types, lang }) => {
   const [isShiny, setIsShiny] = React.useState(false)
 
-  console.log("Individual", JSON.stringify(pokemon, null, 2))
+  console.log("individuelPokemon", JSON.stringify(pokemon, null, 2))
+
   return (
-    <div className='absolute top-0 left-0 w-full h-full bg-black/75 bg-opacity-90 flex flex-col items-center justify-center z-50'>
+    <div className='fixed top-0 left-0 w-full h-full bg-black/75 flex flex-col items-center justify-center z-50'>
       <div className='bg-gray-100 rounded-lg shadow-lg p-6'>
         <div className='flex justify-between items-center mb-4'>
           <h2 className='text-2xl font-bold'>#{pokemon.id} - {pokemon.name[lang]}</h2>
@@ -78,6 +82,8 @@ const IndividualPokemon: React.FC<Props> = ({ pokemon, onClose, types, lang }) =
           <StatCase title='Défense spé.' value={pokemon.stats.spe_def}/>
           <StatCase title='Vitesse' value={pokemon.stats.vit}/>
         </div>
+
+        <Evolution pokemon={pokemon} pokemons={pokemons} lang={lang}/>
 
       </div>
     </div>

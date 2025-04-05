@@ -18,6 +18,8 @@ interface Pokemon {
     spe_def: number
     vit: number
   }
+  evolvedFrom: { [key: string]: string }
+  evolvesTo: { [key: string]: string }
 }
 
 interface Type {
@@ -48,6 +50,8 @@ function App() {
   const [filterGeneration, setFilterGeneration] = useState<string | null>(null)
   const [sortSelection, setSortSelection] = useState<string | null>(null) 
 
+  
+
   const toggleLang = () => {
     setLang((prevLang) => (prevLang === "fr" ? "en" : "fr"))
   }
@@ -55,7 +59,7 @@ function App() {
   useEffect(() => {
     const requestOptions: RequestInit = {
       method: "GET",
-      redirect: "follow" as RequestRedirect // Typage correct pour "follow"
+      redirect: "follow" as RequestRedirect
     }
 
     fetch("https://pokedex-api.3rgo.tech/api/pokemon", requestOptions)
@@ -188,17 +192,19 @@ function App() {
         </div>
       </header>
 
-      {isVisible && (
-        <IndividualPokemon 
-          pokemon={isVisible}
-          types={listType}
-          lang={lang}
-          onClose={() => setIsVisible(null)}
-        />
-      )}
+      
 
 
       <div className='flex gap-3 w-full flex-wrap px-15 justify-center'>
+        {isVisible && (
+          <IndividualPokemon 
+            pokemon={isVisible}
+            pokemons={listPokemon}
+            types={listType}
+            lang={lang}
+            onClose={() => setIsVisible(null)}
+          />
+        )}
         {sortedPokemon.length > 0 ? 
           sortedPokemon.map((pokemon, index) => (
             <div 
