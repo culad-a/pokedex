@@ -1,6 +1,8 @@
 import React from 'react'
 import StatCase from './statCase'
 import Evolution from './evolution'
+import { langResources } from '../langResources'
+
 
 interface Pokemon {
   id: number
@@ -35,8 +37,6 @@ interface Props {
 const IndividualPokemon: React.FC<Props> = ({ pokemon, pokemons, onClose, types, lang }) => {
   const [isShiny, setIsShiny] = React.useState(false)
 
-  console.log("individuelPokemon", JSON.stringify(pokemon, null, 2))
-
   return (
     <div className='fixed top-0 left-0 w-full h-full bg-black/75 flex flex-col items-center justify-center z-50'>
       <div className='bg-gray-100 rounded-lg shadow-lg p-6'>
@@ -55,9 +55,9 @@ const IndividualPokemon: React.FC<Props> = ({ pokemon, pokemons, onClose, types,
             </div>
           </div>
           <div className='text-left mt-4 md:mt-0'>
-            <p><strong>Génération :</strong> {pokemon.generation}</p>
-            <p><strong>Poids :</strong> {pokemon.weight}</p>
-            <p><strong>Taille :</strong> {pokemon.height}</p>
+            <p><strong>{langResources[lang].generation}</strong> {pokemon.generation}</p>
+            <p><strong>{langResources[lang].poids}</strong> {pokemon.weight}</p>
+            <p><strong>{langResources[lang].taille}</strong> {pokemon.height}</p>
 
           </div>
         </div>
@@ -76,11 +76,11 @@ const IndividualPokemon: React.FC<Props> = ({ pokemon, pokemons, onClose, types,
 
         <div className='flex gap-4'>
           <StatCase title='PV' value={pokemon.stats.hp}/>
-          <StatCase title='Attaque' value={pokemon.stats.atk}/>
-          <StatCase title='Défense' value={pokemon.stats.def}/>
-          <StatCase title='Attaque spé.' value={pokemon.stats.spe_atk}/>
-          <StatCase title='Défense spé.' value={pokemon.stats.spe_def}/>
-          <StatCase title='Vitesse' value={pokemon.stats.vit}/>
+          <StatCase title={langResources[lang].attaque} value={pokemon.stats.atk}/>
+          <StatCase title={langResources[lang].defense} value={pokemon.stats.def}/>
+          <StatCase title={langResources[lang].spe_atk} value={pokemon.stats.spe_atk}/>
+          <StatCase title={langResources[lang].spe_def} value={pokemon.stats.spe_def}/>
+          <StatCase title={langResources[lang].vitesse} value={pokemon.stats.vit}/>
         </div>
 
         <Evolution pokemon={pokemon} pokemons={pokemons} lang={lang}/>

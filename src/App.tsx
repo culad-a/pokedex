@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { langResources } from './langResources'
 import IndividualPokemon from './composants/individualPokemon'
 
 interface Pokemon {
@@ -32,17 +33,17 @@ function App() {
   const [listPokemon, setListPokemon] = useState<Pokemon[]>([])
   const [listType, setListType] = useState<Type[]>([])
   const [listGeneration, setListGeneration] = useState<number[]>([])
+  const [lang, setLang] = useState<'fr' | 'en'>('fr')
   const listSort = [
-    'Nombre croissant', 'Nombre décroissant', 
-    'Alphabétique croissant', 'Alphabétique décroissant', 
-    'Poids croissant', 'Poids décroissant', 
-    'Taille croissant', 'Taille décroissant'
+    langResources[lang].n_croissant, langResources[lang].n_decroissant, 
+    langResources[lang].a_z, langResources[lang].z_a, 
+    langResources[lang].poids_croissant, langResources[lang].poids_decroissant, 
+    langResources[lang].taille_croissant, langResources[lang].taille_decroissant
   ]
 
   const [loading, setLoading] = useState<boolean>(true) 
   const [error, setError] = useState<string | null>(null) 
 
-  const [lang, setLang] = useState<'fr' | 'en'>('fr')
   const [search, setSearch] = useState<string>('')
   const [isVisible, setIsVisible] = useState<Pokemon | null>(null)
 
@@ -93,28 +94,24 @@ function App() {
       .finally(() => setLoading(false))
   }, [])
 
-  useEffect(() => {
-    console.log('Pokemon ->', JSON.stringify(listPokemon[0], null, 2))
-    console.log('Type ->', JSON.stringify(listType[0], null, 2))
-  }, [listPokemon, listType])
 
   const sortPokemon = (pokemonList: Pokemon[]): Pokemon[] => {
     switch (sortSelection) {
-      case 'Nombre croissant':
+      case langResources[lang].n_croissant:
         return pokemonList.sort((a, b) => a.id - b.id)  
-      case 'Alphabétique croissant':
+      case langResources[lang].a_z:
         return pokemonList.sort((a, b) => a.name[lang].localeCompare(b.name[lang]))
-      case 'Poids croissant':
+      case langResources[lang].z_a:
         return pokemonList.sort((a, b) => a.weight - b.weight)
-      case 'Taille croissant':
+      case langResources[lang].poids_croissant:
         return pokemonList.sort((a, b) => a.height - b.height)
-      case 'Nombre décroissant':
+      case langResources[lang].taille_croissant:
         return pokemonList.sort((a, b) => b.id - a.id )  
-      case 'Alphabétique décroissant':
+      case langResources[lang].n_decroissant:
         return pokemonList.sort((a, b) => b.name[lang].localeCompare(a.name[lang]))
-      case 'Poids décroissant':
+      case langResources[lang].poids_decroissant:
         return pokemonList.sort((a, b) => b.weight - a.weight)
-      case 'Taille décroissant':
+      case langResources[lang].taille_decroissant:
         return pokemonList.sort((a, b) => b.height - a.height)
       default:
         return pokemonList 
@@ -144,13 +141,13 @@ function App() {
         ></button>
         <div className="flex justify-center bg-red-400 w-full m-2 p-2 rounded-lg">
           <div>
-            Tri :
+          {langResources[lang].tri}
             <select 
               name="Sort"
               value={sortSelection || ""}
               onChange={(e) => setSortSelection(e.target.value || null)}
             >
-              <option value="">Tous</option>
+              <option value="">{langResources[lang].tous}</option>
               {listSort.map((sort, index) => (
                 <option key={index} value={sort}>{sort}</option>
               ))}
@@ -158,32 +155,32 @@ function App() {
           </div>
           <input 
             type="text"
-            placeholder="Rechercher..."
+            placeholder={langResources[lang].rechercher}
             className="border border-2 border-white rounded-sm p-1" 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
           <div>
-            Types : 
+          {langResources[lang].types}
             <select 
               name="Tous"
               value={filterType || ""}
               onChange={(e) => setFilterType(e.target.value || null)}
             >
-              <option value="">Tous</option>
+              <option value="">{langResources[lang].tous}</option>
               {listType.map((type) => (
                 <option key={type.id} value={type.id}>{type.name[lang]}</option>
               ))}
             </select>
           </div>
           <div>
-            Génération : 
+            {langResources[lang].generation} 
             <select 
               name="Generation"
               value={filterGeneration || ""}
               onChange={(e) => setFilterGeneration(e.target.value || null)}
             >
-              <option value="">Toutes</option>
+              <option value="">{langResources[lang].tous}</option>
               {listGeneration.map((generation, index) => (
                 <option key={generation} value={generation}>{generation}</option>
               ))}
@@ -191,9 +188,6 @@ function App() {
           </div>
         </div>
       </header>
-
-      
-
 
       <div className='flex gap-3 w-full flex-wrap px-15 justify-center'>
         {isVisible && (
@@ -237,7 +231,7 @@ function App() {
             </div>
           )) :
         (
-          <div>Aucun résultat</div>
+          <div>{langResources[lang].aucun_resultat}</div>
         )}
       </div>
 
