@@ -9,6 +9,15 @@ interface Pokemon {
   types: number[]
   generation: number
   image: string
+  image_shiny: string
+  stats: {
+    hp: number
+    atk: number
+    def: number
+    spe_atk: number
+    spe_def: number
+    vit: number
+  }
 }
 
 interface Type {
@@ -178,14 +187,15 @@ function App() {
           </div>
         </div>
       </header>
+
       {isVisible && (
-      <IndividualPokemon 
-        pokemon={isVisible}
-        types={listType}
-        lang={lang}
-        onClose={() => setIsVisible(null)}
-      />
-    )}
+        <IndividualPokemon 
+          pokemon={isVisible}
+          types={listType}
+          lang={lang}
+          onClose={() => setIsVisible(null)}
+        />
+      )}
 
 
       <div className='flex gap-3 w-full flex-wrap px-15 justify-center'>
@@ -207,9 +217,15 @@ function App() {
                 </div>
                 <div>{pokemon.name[lang]}</div>
                 <div className='flex justify-around'>
-                  {pokemon.types.map((idType, index) => (
-                    <img key={index} src={listType.find(item => item.id === idType)?.image} alt="image type" className="rounded-full border border-yellow-500 border-2 w-8" />
-                  ))}
+                {pokemon.types.map(id => {
+                  const type = listType.find(t => t.id === id)
+                  return type ? (
+                    <div key={id} className='border border-2 border-yellow-500 rounded-full flex items-center bg-zinc-900'>
+                      <img src={type.image} alt={type.name[lang]} title={type.name[lang]} className="w-8 h-8 rounded-full " />
+                      <span className='pl-1 pr-2 text-white'>{type.name[lang]}</span>
+                    </div>
+                  ) : null
+                })}
                 </div>
               </div>
             </div>
